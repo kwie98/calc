@@ -1,0 +1,23 @@
+.buttons {
+    margin: auto; /* center */
+    display: inline-grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 5px;
+    row-gap: 5px;
+}
+
+.disp {
+    grid-column: 1 / 5;
+}
+
+.operator {
+    background: #ddd;
+}
+
+.function {
+    background: #ddd;
+}
+
+.equals {
+    background: hsl(30deg 100% 65%);
+}
