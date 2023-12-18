@@ -1,57 +1,65 @@
 export type Token = number | string;
-// Handle whitespace and negative numbers
+
+// All operators with their functions.
+// biome-ignore format:
+export const OPERATORS = new Map([
+    ["+", (left: number, right: number): number => left + right],
+    ["-", (left: number, right: number): number => left - right],
+    ["*", (left: number, right: number): number => left * right],
+    ["/", (left: number, right: number): number => left / right],
+    ["^", (left: number, right: number): number => left ** right],
+]);
+const UNIQUE_SYMBOLS = ["*", "/", "(", ")"]; // symbols that are never part of numbers
+const SIGNS = ["+", "-"];
+const SYMBOLS = [...UNIQUE_SYMBOLS, ...SIGNS];
+const NUMBERS = [...".0123456789"];
+// const NUMBER = /[+-]?[0-9]*\.?[0-9]*(e[+-]?[0-9]*\.?[0-9]*)?/;
+
 export function tokenize(input: string): Token[] {
     const tokens: Token[] = [];
-    let pot_num_start = 0; // potential start of a number
-    let after_op = false; // set to true iff previous token was an operator
+    let current_start = 0; // start of current symbol
 
-    // Parse whatever is in the slice (pot_num_start, i)
-    function parse_pot_num(i: number) {
-        const slice = input.slice(pot_num_start, i)
-        if (slice === "") return;
-        const num = Number(slice);
-        console.log(num)
-        if (Number.isNaN(num)) {
-            throw Error(`Could not parse number ${slice}`);
-        }
-        tokens.push(num);
-    }
-
-    function handle_symbol(i: number, is_op: boolean) {
-        // Found a potential number before this symbol (...but could be whitespace or gibberish):
-        if (pot_num_start < i) {
-            parse_pot_num(i)
-        }
-        pot_num_start = i + 1;
-        tokens.push(input[i]);
-        if (is_op) {
-            after_op = true;
-        }
+    // Check if a symbol (of `SYMBOLS`) represents an operation or is the sign of a number:
+    function isOperation(char: string): boolean {
+        if (UNIQUE_SYMBOLS.includes(char)) return true;
+        // Is it + or -?
+        if (!SIGNS.includes(char)) return false;
+        // Is that + or - actually a sign of a number?
+        const last_token = tokens[tokens.length - 1];
+        if (
+            last_token === undefined ||
+            (typeof last_token === "string" &&
+                ["(", ...OPERATORS.keys()].includes(last_token))
+        )
+            return false;
+        return true;
     }
 
     for (let i = 0; i < input.length; i++) {
-        switch (input[i]) {
-            case "(":
-            case ")":
-                handle_symbol(i, false);
-                break;
-            case "+":
-            case "*":
-            case "/":
-                handle_symbol(i, true);
-                break;
-            case "-":
-                // This `-` is an operator:
-                if (!after_op) {
-                    handle_symbol(i, true);
-                    break;
-                }
-                // This `-` is part of a number:
-                break;
-            default:
-                break;
+        if (isOperation(input[i])) {
+            tokens.push(input[i]);
+            current_start = i + 1;
+            continue;
         }
+        if (NUMBERS.includes(input[i]) || SIGNS.includes(input[i])) {
+            // If this is the last char of a number token, parse it:
+            if (input[i + 1] === undefined || SYMBOLS.includes(input[i + 1])) {
+                const slice = input.slice(current_start, i + 1);
+                // Screw you, javascript:
+                if (slice === "") throw Error("Clearly this could never happen?");
+                const num = Number(slice);
+                if (Number.isNaN(num)) throw Error(`Could not parse number ${slice}.`);
+
+                tokens.push(num);
+                current_start = i + 1;
+                continue;
+            }
+            // We ain't at the end yet, yo:
+            continue;
+        }
+        throw Error(
+            `Could not parse symbol ${input[i]} in ${input} at index ${i}.`,
+        );
     }
-    parse_pot_num(input.length)
     return tokens;
 }

@@ -1,12 +1,4 @@
-import { Token, tokenize } from "./tokenize";
-
-// biome-ignore format:
-const OPERATORS = new Map([
-    ["+", (left: number, right: number): number => left + right],
-    ["-", (left: number, right: number): number => left - right],
-    ["*", (left: number, right: number): number => left * right],
-    ["/", (left: number, right: number): number => left / right],
-]);
+import { OPERATORS, Token, tokenize } from "./tokenize";
 
 type Node = NumNode | OpNode;
 
