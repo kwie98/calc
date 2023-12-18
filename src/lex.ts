@@ -1,14 +1,5 @@
-export type Token = number | string;
+import { BINARY_OPS, BinaryOpSymbol, Token } from "./token";
 
-// All binary operators with their functions.
-// biome-ignore format:
-export const BINARY_OPS = new Map([
-    ["+", (left: number, right: number): number => left + right],
-    ["-", (left: number, right: number): number => left - right],
-    ["*", (left: number, right: number): number => left * right],
-    ["/", (left: number, right: number): number => left / right],
-    ["^", (left: number, right: number): number => left ** right],
-]);
 const NUMBER = /^[+-]?[0-9]*\.?[0-9]+(e[+-]?[0-9]+)?/;
 
 // Small finite state machine to discriminate number signs from operations:
@@ -17,10 +8,11 @@ enum State {
     ExpectExpr = 1,
 }
 
+// TODO: Unary ops, signs as unary ops
 export function lex(input: string): Token[] {
     let state = State.ExpectExpr;
     const tokens: Token[] = [];
-    let remainder = input;
+    let remainder = input.replace(/\s/g, "");
 
     while (remainder.length > 0) {
         switch (state) {
@@ -45,8 +37,8 @@ export function lex(input: string): Token[] {
                 throw Error(`Expected expression but found ${remainder}.`);
             }
             case State.ExpectBinaryOpOrClosing: {
-                if ([...BINARY_OPS.keys()].includes(remainder[0])) {
-                    tokens.push(remainder[0]);
+                if ([...BINARY_OPS.keys()].includes(remainder[0] as BinaryOpSymbol)) {
+                    tokens.push(remainder[0] as BinaryOpSymbol);
                     remainder = remainder.slice(1);
                     state = State.ExpectExpr;
                     continue;
@@ -58,7 +50,7 @@ export function lex(input: string): Token[] {
                     continue;
                 }
                 throw Error(
-                    `Expected binary operation or closing bracket but found ${remainder}`,
+                    `Expected binary operation or closing bracket but found "${remainder}"`,
                 );
             }
         }
