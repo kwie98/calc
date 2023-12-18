@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
-import { Token, lex } from "../src/lex";
+import { lex } from "../src/lex";
 
-function untokenize(tokens: Token[]): string {
+function untokenize(tokens: (string | number)[]): string {
     return tokens.map((t) => t.toString()).reduce((acc, s) => acc + s);
 }
 
@@ -11,6 +11,9 @@ it("untokenizes correctly", () => {
     return expect(untokenize(tokens)).toEqual("(-312316*(+4256.1+-590-+612))/-7234")
 });
 
+it("handles (evil nbsp) whitespace in equation", () =>
+    expect(lex(" (	    3 -   45 ) ")).toEqual(["(", 3, "-", 45, ")"]));
+
 it("tokenizes empty string", () => expect(lex("")).toEqual([]));
 
 it("tokenizes positive number", () => expect(lex("+4")).toEqual([4]));
@@ -18,8 +21,7 @@ it("tokenizes positive number", () => expect(lex("+4")).toEqual([4]));
 it("tokenizes equation with a positive and negative number", () =>
     expect(lex("+3+-3")).toEqual([3, "+", -3]));
 
-it("errors on wrong equation", () =>
-    expect(() => lex("+-")).toThrowError());
+it("errors on wrong equation", () => expect(() => lex("+-")).toThrowError());
 
 it("tokenizes number", () => {
     const tokens = [12345];
@@ -53,14 +55,14 @@ it("tokenizes complex equation", () => {
 });
 
 it("tokenizes trivial equation", () => {
-    const tokens = ["+12.3e-6"]
+    const tokens = ["+12.3e-6"];
     expect(lex(untokenize(tokens))).toEqual(tokens.map((s) => Number(s)));
-})
+});
 
 it("tokenizes trivial bracketed equation", () => {
-    const tokens = ["(", 12, ")"]
+    const tokens = ["(", 12, ")"];
     expect(lex(untokenize(tokens))).toEqual(tokens);
-})
+});
 
 it("errors on wrong number", () => {
     return expect(() => lex("+12.3-e6")).toThrowError("Expected expression");
