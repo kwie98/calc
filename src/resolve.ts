@@ -1,9 +1,9 @@
-import { OPERATORS, Token, tokenize } from "./tokenize";
+import { BINARY_OPS, Token, lex } from "./lex";
 
 type Node = NumNode | OpNode;
 
 export function parse(input: string): Node | null {
-    return parse_term(tokenize(input), 0);
+    return parse_term(lex(input), 0);
 }
 
 // WARNING: Can only parse bracketed negative numbers!
@@ -46,7 +46,7 @@ class NumNode {
 class OpNode {
     resolve: () => number;
     constructor(left: Node, right: Node, operator: string) {
-        const resolver = OPERATORS.get(operator);
+        const resolver = BINARY_OPS.get(operator);
         if (resolver === undefined) {
             throw Error(`Could not parse operator ${operator}.`);
         }
