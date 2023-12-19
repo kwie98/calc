@@ -18,3 +18,7 @@ it("resolves equation with all operators and brackets", () =>
 
 it("errors on unbalanced brackets", () =>
     expect(() => resolve("3 + 4)")).toThrowError("unbalanced"));
+
+it("yo", () =>
+    expect(true).toEqual(false)
+)
