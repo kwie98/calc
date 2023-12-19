@@ -1,17 +1,22 @@
-import "./style.css";
+import { lex } from "./lex";
+import { resolvePostfix, toPostfix } from "./postfix";
 
-let current_equation = "";
+const display = document.querySelector("#display") as HTMLInputElement;
 
-const numbers = document.querySelectorAll<HTMLButtonElement>(".number")
-for (const n of numbers) {
-    console.log(n.innerHTML)
+const charBtns = document.querySelectorAll<HTMLButtonElement>(".char");
+for (const btn of charBtns) {
+    btn.onclick = () => {
+        display.value = display.value + btn.innerHTML;
+    };
 }
 
-const disp = document.querySelector<HTMLInputElement>(".disp")
-// disp?.oninput = (e) => {
-//     console.log(e)
-// }
-disp?.addEventListener("input", (e) => {
-    console.log(e)
-    // e.preventDefault()
-})
+const del = document.querySelector("#delete") as HTMLButtonElement;
+del.onclick = () => {
+    display.value = "0"
+}
+
+const equals = document.querySelector("#equals") as HTMLButtonElement;
+equals.onclick = () => {
+    const input = display.value.length === 0 ? "0" : display.value
+    display.value = resolvePostfix(toPostfix(lex(input))).toString()
+}

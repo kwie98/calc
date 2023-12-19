@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <style>
     * {
@@ -43,28 +44,29 @@
 
 <body>
   <div class="buttons" id="calculator">
-    <input readonly class="disp" />
-    <button class="function">C</button>
-    <button class="operator">%</button>
-    <button class="function">DEL</button>
-    <button class="operator">/</button>
-    <button class="number">7</button>
-    <button class="number">8</button>
-    <button class="number">9</button>
-    <button class="operator">*</button>
-    <button class="number">4</button>
-    <button class="number">5</button>
-    <button class="number">6</button>
-    <button class="operator">-</button>
-    <button class="number">1</button>
-    <button class="number">2</button>
-    <button class="number">3</button>
-    <button class="operator">+</button>
-    <button class="number">.</button>
-    <button class="number">0</button>
-    <button class="function">ANS</button>
-    <button class="equals">=</button>
+    <input id="display" value="0" />
+    <button class="char gray">(</button>
+    <button class="char gray">)</button>
+    <button class="char gray">%</button>
+    <button id="delete">C</button>
+    <button class="char">7</button>
+    <button class="char">8</button>
+    <button class="char">9</button>
+    <button class="char gray">/</button>
+    <button class="char">4</button>
+    <button class="char">5</button>
+    <button class="char">6</button>
+    <button class="char gray">*</button>
+    <button class="char">1</button>
+    <button class="char">2</button>
+    <button class="char">3</button>
+    <button class="char gray">-</button>
+    <button class="char">0</button>
+    <button class="char">.</button>
+    <button id="equals">=</button>
+    <button class="char gray">+</button>
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>
