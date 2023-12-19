@@ -1,9 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <style>
+    * {
+      font-size: 1.1em;
+    }
+
+    .buttons {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-grid;
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 5px;
+      row-gap: 5px;
+    }
+
+    .buttons> :not(.gray, #equals, #display, #delete) {
+      background: #ddd;
+    }
+
+    .gray,
+    #delete {
+      background: #bbb;
+    }
+
+    #equals {
+      background: hsl(30deg 100% 65%);
+    }
+
+    #display {
+      grid-column: 1 / 5;
+      text-align: right;
+    }
+  </style>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="/calculator.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vite + TS</title>
 </head>
