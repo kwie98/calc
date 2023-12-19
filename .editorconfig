@@ -3,8 +3,5 @@ indent_style = space
 indent_size = 4
 max_line_length = 100
 
-[*.{json,yml,yaml,hs,html}]
+[*.{md,json,yml,yaml,hs,html}]
 indent_size = 2
-
-[*.md]
-indent_size = 3

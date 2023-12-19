@@ -1,18 +1,17 @@
-# Counter Thing
+# Static Calculator Site
 
-## Client
+## Stack
 
-- Vanilla JS (TS)
-- Vite as build tool
-- Volta as toolchain manager
+-  Vanilla JS (TS)
+-  Vite as build tool
+-  Volta as toolchain manager
 
 ### Developing
 
-- In `./client`:
-  - Use `npm install` to install frontend dependencies (for instance, after cloning the repo)
-  - Use `npm run dev` to host the frontend locally with hot-reloading.
+-  Use `npm install` to install dependencies (for instance, after cloning the repo)
+-  Use `npm run dev` to host locally with hot-reloading.
 
-### Frontend Structure
+### Structure
 
-- [./client/public/](./client/public/): Special assets (see <https://vitejs.dev/guide/assets#the-public-directory>)
-- [./client/src/](./client/src/): Client-side code and normal assets
+-  [./public/](./public/): Special assets (see <https://vitejs.dev/guide/assets#the-public-directory>)
+-  [./src/](./src/): Client-side code and normal assets
