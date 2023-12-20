@@ -15,17 +15,13 @@ export function toPostfix(tokens: Token[]): PostfixToken[] {
         if (c === ")") {
             while (true) {
                 const t = stack.pop();
-                if (t === undefined)
-                    throw Error(`Found unbalanced brackets in "${tokens}"`);
+                if (t === undefined) throw Error(`Found unbalanced brackets in "${tokens}"`);
                 if (t === "(") break;
                 result.push(t);
             }
             continue;
         }
-        while (
-            stack.length > 0 &&
-            precedence(c) <= precedence(stack[stack.length - 1])
-        ) {
+        while (stack.length > 0 && precedence(c) <= precedence(stack[stack.length - 1])) {
             result.push(stack.pop() as Token);
         }
         stack.push(c);
@@ -48,7 +44,6 @@ export function resolvePostfix(tokens: PostfixToken[]): number {
         if (result === undefined) throw Error("Impossible");
         stack.push(result);
     }
-    if (stack.length !== 1)
-        throw Error(`Not enough operations in "${tokens}"`);
+    if (stack.length !== 1) throw Error(`Not enough operations in "${tokens}"`);
     return stack[0];
 }

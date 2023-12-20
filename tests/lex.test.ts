@@ -5,10 +5,9 @@ function untokenize(tokens: (string | number)[]): string {
     return tokens.map((t) => t.toString()).reduce((acc, s) => acc + s);
 }
 
-// biome-ignore format:
 it("untokenizes correctly", () => {
-    const tokens = ["(", "-312316", "*", "(", "+4256.1", "+", -590, "-", "+612", ")", ")", "/", -7234];
-    return expect(untokenize(tokens)).toEqual("(-312316*(+4256.1+-590-+612))/-7234")
+    const tokens = ["(", "-3126", "*", "(", "+456.1", "+", -590, "-", "+612", ")", ")", "/", -7234];
+    return expect(untokenize(tokens)).toEqual("(-3126*(+456.1+-590-+612))/-7234");
 });
 
 it("handles (evil nbsp) whitespace in equation", () =>
@@ -48,7 +47,6 @@ it("tokenizes + - equation", () => {
     return expect(lex(untokenize(tokens))).toEqual(tokens);
 });
 
-// biome-ignore format:
 it("tokenizes complex equation", () => {
     const tokens = ["(", -312316, "*", "(", 4256.1, "+", -590, "-", 612, ")", ")", "/", -7234];
     expect(lex(untokenize(tokens))).toEqual(tokens);

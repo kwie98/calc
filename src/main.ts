@@ -16,9 +16,7 @@ const numberBtns = document.querySelectorAll<HTMLButtonElement>(".number");
 for (const btn of numberBtns) {
     btn.onclick = () => {
         display.value =
-            display.value === DEFAULT_DISPLAY
-                ? btn.innerHTML
-                : display.value + btn.innerHTML;
+            display.value === DEFAULT_DISPLAY ? btn.innerHTML : display.value + btn.innerHTML;
     };
 }
 

@@ -3,7 +3,7 @@ import { resolvePostfix, toPostfix } from "../src/postfix";
 import { lex } from "../src/lex";
 
 function resolve(input: string): number {
-    return resolvePostfix(toPostfix(lex(input)))
+    return resolvePostfix(toPostfix(lex(input)));
 }
 
 it("resolves trivial equation", () => expect(resolve("123")).toEqual(123));
